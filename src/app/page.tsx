@@ -1,0 +1,35 @@
+import EmojiNavigator from "@/components/emojiNavigator";
+import gameObjectsData from "../game-object.json"
+
+type GameObject = {
+  id: number;
+  objectName: string;
+  emoji: string;
+};
+
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffledArray = [...array];
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+}
+
+export default function Home() {
+  const allGameObjects: GameObject[] = gameObjectsData as GameObject[];
+  const filteredGameObjects = allGameObjects.filter(obj => {
+    return obj.objectName.length <= 3;
+  });
+  console.log(filteredGameObjects)
+  console.log(filteredGameObjects.length)
+  const shuffledGameObjects = shuffleArray(filteredGameObjects);
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center">
+      {shuffledGameObjects.length > 0 ? (
+        <EmojiNavigator initialObjects={shuffledGameObjects} />
+      ) : (
+        <p className="text-xl">No game objects found or data is not in the expected format.</p>
+      )}
+    </main>)
+}
