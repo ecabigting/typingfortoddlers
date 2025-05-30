@@ -18,12 +18,14 @@ function shuffleArray<T>(array: T[]): T[] {
 
 export default function Home() {
   const allGameObjects: GameObject[] = gameObjectsData as GameObject[];
-  const filteredGameObjects = allGameObjects.filter(obj => {
-    return obj.objectName.length <= 3;
-  });
-  console.log(filteredGameObjects)
-  console.log(filteredGameObjects.length)
-  const shuffledGameObjects = shuffleArray(filteredGameObjects);
+  // const filteredGameObjects = allGameObjects.filter(obj => {
+  //   return obj.objectName.length <= 5;
+  // });
+
+  // const shuffledGameObjects = shuffleArray(filteredGameObjects);
+  const shuffledGameObjects = shuffleArray(allGameObjects)
+  console.log(shuffledGameObjects)
+  console.log(shuffledGameObjects.length)
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
       {shuffledGameObjects.length > 0 ? (

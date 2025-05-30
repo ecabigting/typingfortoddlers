@@ -1,3 +1,5 @@
+// src/components/EmojiNavigator.tsx
+
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
@@ -28,59 +30,29 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
       if (isShaking || showCorrectFeedback) return;
 
       const currentWordLength = gameObjects[currentIndex]?.objectName.length || 0;
+      if (currentWordLength === 0) return; // No word, nothing to guess
 
       if (event.key.length === 1 && event.key.match(/[a-z]/i)) {
         const pressedChar = event.key.toLowerCase();
         setGuess(prevGuess => {
-          // Determine the actual first empty slot for user input,
-          // considering the hint at index 0.
-          let activeIndex = -1;
-          for (let i = 0; i < prevGuess.length; i++) {
-            if (prevGuess[i] === "") {
-              // If it's the first slot (index 0) and it's supposed to be a hint
-              // and the word has more than one character, this isn't the active slot for user input.
-              // User should start typing from index 1.
-              // However, if word is 1 char long, index 0 is the only slot.
-              // This logic means user can't overwrite the hint if word > 1 char.
-              if (i === 0 && currentWordLength > 1) continue; // Skip index 0 if it's a hint for a multi-char word
-
-              activeIndex = i;
-              break;
-            }
-          }
-
-          // If the word is 1 char long, and it's already filled (by the hint), do nothing.
-          if (currentWordLength === 1 && prevGuess[0] !== "" && activeIndex === -1) {
-            return prevGuess;
-          }
-
-
-          if (activeIndex !== -1) {
+          // User can only fill the first letter (index 0) if it's currently empty
+          if (prevGuess[0] === "") {
             const newGuess = [...prevGuess];
-            newGuess[activeIndex] = pressedChar;
+            newGuess[0] = pressedChar;
             return newGuess;
           }
-          return prevGuess;
+          return prevGuess; // First letter already filled, or no empty slot (should only be index 0)
         });
         event.preventDefault();
       } else if (event.key === "Backspace") {
         setGuess(prevGuess => {
-          let indexToClear = -1;
-          // Find the last filled character that is NOT the hint at index 0
-          // (unless the word is only 1 character long, in which case nothing happens).
-          for (let i = prevGuess.length - 1; i >= 1; i--) { // Start checking from index 1 backwards
-            if (prevGuess[i] !== "") {
-              indexToClear = i;
-              break;
-            }
-          }
-
-          if (indexToClear !== -1) { // If a user-typed character (index >= 1) is found
+          // User can only clear the first letter (index 0) if it's filled
+          if (prevGuess[0] !== "") {
             const newGuess = [...prevGuess];
-            newGuess[indexToClear] = "";
+            newGuess[0] = ""; // Clear only the first letter
             return newGuess;
           }
-          return prevGuess; // No user-typed character to delete
+          return prevGuess; // First letter already empty
         });
         event.preventDefault();
       }
@@ -90,26 +62,24 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
     return () => {
       window.removeEventListener('keydown', handleGlobalKeyDown);
     };
-    // Add gameObjects and currentIndex because currentWordLength is derived from them
   }, [isShaking, showCorrectFeedback, gameObjects, currentIndex]);
 
   // useEffect for init/resetting guess when current game object changes
   useEffect(() => {
-    setGameObjects(initialObjects); // This might be redundant if initialObjects never changes post-mount
+    setGameObjects(initialObjects);
     let currentObjectName = "";
-    let firstLetter = "";
 
     if (initialObjects.length > 0 && initialObjects[currentIndex]) {
       currentObjectName = initialObjects[currentIndex].objectName;
-      if (currentObjectName.length > 0) {
-        firstLetter = currentObjectName[0].toLowerCase(); // Get the first letter for the hint
-      }
     }
 
-    // Initialize guess array
+    // Initialize guess array with new hint logic
     const newGuessArray = Array(currentObjectName.length).fill("");
     if (currentObjectName.length > 0) {
-      newGuessArray[0] = firstLetter; // Set the first letter as a hint
+      newGuessArray[0] = ""; // First letter is blank for user input
+      for (let i = 1; i < currentObjectName.length; i++) {
+        newGuessArray[i] = currentObjectName[i].toLowerCase(); // Rest are hints
+      }
     }
     setGuess(newGuessArray);
 
@@ -123,12 +93,15 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
     if (showCorrectFeedback || isShaking) return;
 
     const currentObject = gameObjects[currentIndex];
-    // Ensure guess array is initialized for the current word length
     if (currentObject && guess.length > 0 && guess.length === currentObject.objectName.length) {
-      const isGuessComplete = guess.every(char => char !== "");
+      // The guess is complete if the first letter (user input) is filled.
+      // The rest are hints, so they are always "filled" from the start.
+      const isPlayerInputComplete = guess[0] !== "";
 
-      if (isGuessComplete) {
-        const guessedWord = guess.join('').toLowerCase();
+      if (isPlayerInputComplete) {
+        // Construct the guessed word. The objectName's first char + rest of guess (which are hints)
+        // OR ensure the full objectName is used for comparison
+        const guessedWord = (guess[0] + currentObject.objectName.substring(1)).toLowerCase();
         const correctWord = currentObject.objectName.toLowerCase();
 
         if (guessedWord === correctWord) {
@@ -140,16 +113,19 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
           setIsShaking(true);
           setTimeout(() => {
             setIsShaking(false);
-            // When clearing for incorrect guess, reinstate the hint
+            // When clearing for incorrect guess, only clear the first letter (user input)
             if (gameObjects[currentIndex]) {
               const currentObjName = gameObjects[currentIndex].objectName;
-              const newGuessWithHint = Array(currentObjName.length).fill("");
+              const newGuessWithHints = Array(currentObjName.length).fill("");
               if (currentObjName.length > 0) {
-                newGuessWithHint[0] = currentObjName[0].toLowerCase();
+                newGuessWithHints[0] = ""; // User's part is cleared
+                for (let i = 1; i < currentObjName.length; i++) {
+                  newGuessWithHints[i] = currentObjName[i].toLowerCase(); // Hints remain
+                }
               }
-              setGuess(newGuessWithHint);
+              setGuess(newGuessWithHints);
             }
-          }, 500);
+          }, 3000);
         }
       }
     }
@@ -220,28 +196,30 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
 
       <div className={`flex space-x-2 ${isShaking ? 'shake-animation' : ''}`}>
         {currentObject.objectName.split("").map((_, index) => {
-          // Define common base classes for all input elements
           const baseClasses = "pb-10 pt-10 w-20 h-32 md:w-24 md:pt-12 md:pb-12 md:h-34 text-center text-7xl md:text-9xl";
 
-          // Define text color classes - now the same for hint and user input
-          const textColor = "text-slate-700 dark:text-slate-200"; // Assuming this is the desired uniform color
+          // Styling for the first letter (user input) vs. hints (rest of the letters)
+          const isHint = index > 0 && currentObject.objectName.length > 0;
 
-          // Define border classes: no bottom border for the hint, regular border for others
-          const borderStyle = (index === 0 && currentObject.objectName.length > 0)
-            ? "border-b-0" // No bottom border for the hint
-            : "border-b-8 border-b-orange-600"; // Bottom border for user-typed characters
+          {/* const textColor = isHint */ }
+          {/*   ? "text-slate-400 dark:text-slate-500" // Dimmer color for hints */ }
+          {/*   : "text-slate-700 dark:text-slate-200"; // Regular color for user input */ }
+          const textColor = "text-white"
+          const borderStyle = isHint
+            ? "border-b-0" // No bottom border for hints
+            : "border-b-8 border-b-orange-600"; // Bottom border for user input (first letter)
 
           return (
             <input
-              key={index} // Unique key for each input element
-              type="text" // Input type
-              readOnly // Input is not directly editable by user
-              maxLength={1} // Allow only a single character
-              value={guess[index] || ""} // Controlled component, value from 'guess' state
-              ref={(el: HTMLInputElement | null) => { inputRefs.current[index] = el; }} // Ref for potential direct manipulation (though not primary interaction)
-              className={`${baseClasses} ${textColor} ${borderStyle}`} // Dynamically assembled Tailwind classes
-              aria-label={`Character ${index + 1} of ${currentObject.objectName.length} ${index === 0 && currentObject.objectName.length > 0 ? '(Hint)' : ''}`} // Accessibility label
-              tabIndex={-1} // Remove from tab order as it's not directly interactive
+              key={index}
+              type="text"
+              readOnly
+              maxLength={1}
+              value={guess[index] || ""}
+              ref={(el: HTMLInputElement | null) => { inputRefs.current[index] = el; }}
+              className={`${baseClasses} ${textColor} ${borderStyle}`}
+              aria-label={`Character ${index + 1} of ${currentObject.objectName.length} ${isHint ? '(Hint)' : '(Your Guess)'}`}
+              tabIndex={-1}
             />
           );
         })}
