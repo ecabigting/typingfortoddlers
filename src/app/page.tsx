@@ -20,12 +20,13 @@ function shuffleArray<T>(array: T[]): T[] {
 
 export default function Home() {
   const allGameObjects: GameObject[] = gameObjectsData as GameObject[];
-  // const filteredGameObjects = allGameObjects.filter(obj => {
-  //   return obj.objectName.length <= 5;
-  // });
+  const filteredGameObjects = allGameObjects.filter(obj => {
+    // return obj.objectName.length <= 5;
+    return !obj.emoji.includes(" - ")
+  });
 
-  // const shuffledGameObjects = shuffleArray(filteredGameObjects);
-  const shuffledGameObjects = shuffleArray(allGameObjects)
+  const shuffledGameObjects = shuffleArray(filteredGameObjects);
+  // const shuffledGameObjects = shuffleArray(allGameObjects)
   console.log(shuffledGameObjects)
   console.log(shuffledGameObjects.length)
   return (

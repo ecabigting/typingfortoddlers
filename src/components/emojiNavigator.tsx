@@ -32,7 +32,7 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
       const currentWordLength = gameObjects[currentIndex]?.objectName.length || 0;
       if (currentWordLength === 0) return; // No word, nothing to guess
 
-      if (event.key.length === 1 && event.key.match(/[a-z]/i)) {
+      if (event.key.length === 1 && event.key.match(/[a-z0-9]/i)) {
         const pressedChar = event.key.toLowerCase();
         setGuess(prevGuess => {
           // User can only fill the first letter (index 0) if it's currently empty
@@ -55,6 +55,13 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
           return prevGuess; // First letter already empty
         });
         event.preventDefault();
+      }
+      else if (event.key === "ArrowLeft") {
+        showPreviousEmoji(); // Call your existing function to show the previous emoji
+        event.preventDefault(); // Prevent default browser scroll or other arrow key actions
+      } else if (event.key === "ArrowRight") {
+        showNextEmoji(); // Call your existing function to show the next emoji
+        event.preventDefault(); // Prevent default browser scroll or other arrow key actions
       }
     };
 

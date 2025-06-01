@@ -680,11 +680,6 @@
     "emoji": "🔨"
   },
   {
-    "id": 150,
-    "objectName": "bomb",
-    "emoji": "💣"
-  },
-  {
     "id": 151,
     "objectName": "pill",
     "emoji": "💊"
@@ -886,7 +881,7 @@
   },
   {
     "id": 205,
-    "objectName": "ape",
+    "objectName": "monkey",
     "emoji": "🐒"
   },
   {
@@ -948,5 +943,555 @@
     "id": 224,
     "objectName": "mouth",
     "emoji": "👄"
+  },
+  {
+    "id": 256,
+    "objectName": "0",
+    "emoji": "0️⃣ + 0️⃣ ="
+  },
+  {
+    "id": 257,
+    "objectName": "1",
+    "emoji": "0️⃣ + 1️⃣ ="
+  },
+  {
+    "id": 258,
+    "objectName": "1",
+    "emoji": "1️⃣ + 0️⃣ ="
+  },
+  {
+    "id": 259,
+    "objectName": "2",
+    "emoji": "0️⃣ + 2️⃣ ="
+  },
+  {
+    "id": 260,
+    "objectName": "2",
+    "emoji": "1️⃣ + 1️⃣ ="
+  },
+  {
+    "id": 261,
+    "objectName": "2",
+    "emoji": "2️⃣ + 0️⃣ ="
+  },
+  {
+    "id": 262,
+    "objectName": "3",
+    "emoji": "0️⃣ + 3️⃣ ="
+  },
+  {
+    "id": 263,
+    "objectName": "3",
+    "emoji": "1️⃣ + 2️⃣ ="
+  },
+  {
+    "id": 264,
+    "objectName": "3",
+    "emoji": "2️⃣ + 1️⃣ ="
+  },
+  {
+    "id": 265,
+    "objectName": "3",
+    "emoji": "3️⃣ + 0️⃣ ="
+  },
+  {
+    "id": 266,
+    "objectName": "4",
+    "emoji": "0️⃣ + 4️⃣ ="
+  },
+  {
+    "id": 267,
+    "objectName": "4",
+    "emoji": "1️⃣ + 3️⃣ ="
+  },
+  {
+    "id": 268,
+    "objectName": "4",
+    "emoji": "2️⃣ + 2️⃣ ="
+  },
+  {
+    "id": 269,
+    "objectName": "4",
+    "emoji": "3️⃣ + 1️⃣ ="
+  },
+  {
+    "id": 270,
+    "objectName": "4",
+    "emoji": "4️⃣ + 0️⃣ ="
+  },
+  {
+    "id": 271,
+    "objectName": "5",
+    "emoji": "0️⃣ + 5️⃣ ="
+  },
+  {
+    "id": 272,
+    "objectName": "5",
+    "emoji": "1️⃣ + 4️⃣ ="
+  },
+  {
+    "id": 273,
+    "objectName": "5",
+    "emoji": "2️⃣ + 3️⃣ ="
+  },
+  {
+    "id": 274,
+    "objectName": "5",
+    "emoji": "3️⃣ + 2️⃣ ="
+  },
+  {
+    "id": 275,
+    "objectName": "5",
+    "emoji": "4️⃣ + 1️⃣ ="
+  },
+  {
+    "id": 276,
+    "objectName": "5",
+    "emoji": "5️⃣ + 0️⃣ ="
+  },
+  {
+    "id": 277,
+    "objectName": "6",
+    "emoji": "0️⃣ + 6️⃣ ="
+  },
+  {
+    "id": 278,
+    "objectName": "6",
+    "emoji": "1️⃣ + 5️⃣ ="
+  },
+  {
+    "id": 279,
+    "objectName": "6",
+    "emoji": "2️⃣ + 4️⃣ ="
+  },
+  {
+    "id": 280,
+    "objectName": "6",
+    "emoji": "3️⃣ + 3️⃣ ="
+  },
+  {
+    "id": 281,
+    "objectName": "6",
+    "emoji": "4️⃣ + 2️⃣ ="
+  },
+  {
+    "id": 282,
+    "objectName": "6",
+    "emoji": "5️⃣ + 1️⃣ ="
+  },
+  {
+    "id": 283,
+    "objectName": "6",
+    "emoji": "6️⃣ + 0️⃣ ="
+  },
+  {
+    "id": 284,
+    "objectName": "7",
+    "emoji": "0️⃣ + 7️⃣ ="
+  },
+  {
+    "id": 285,
+    "objectName": "7",
+    "emoji": "1️⃣ + 6️⃣ ="
+  },
+  {
+    "id": 286,
+    "objectName": "7",
+    "emoji": "2️⃣ + 5️⃣ ="
+  },
+  {
+    "id": 287,
+    "objectName": "7",
+    "emoji": "3️⃣ + 4️⃣ ="
+  },
+  {
+    "id": 288,
+    "objectName": "7",
+    "emoji": "4️⃣ + 3️⃣ ="
+  },
+  {
+    "id": 289,
+    "objectName": "7",
+    "emoji": "5️⃣ + 2️⃣ ="
+  },
+  {
+    "id": 290,
+    "objectName": "7",
+    "emoji": "6️⃣ + 1️⃣ ="
+  },
+  {
+    "id": 291,
+    "objectName": "7",
+    "emoji": "7️⃣ + 0️⃣ ="
+  },
+  {
+    "id": 292,
+    "objectName": "8",
+    "emoji": "0️⃣ + 8️⃣ ="
+  },
+  {
+    "id": 293,
+    "objectName": "8",
+    "emoji": "1️⃣ + 7️⃣ ="
+  },
+  {
+    "id": 294,
+    "objectName": "8",
+    "emoji": "2️⃣ + 6️⃣ ="
+  },
+  {
+    "id": 295,
+    "objectName": "8",
+    "emoji": "3️⃣ + 5️⃣ ="
+  },
+  {
+    "id": 296,
+    "objectName": "8",
+    "emoji": "4️⃣ + 4️⃣ ="
+  },
+  {
+    "id": 297,
+    "objectName": "8",
+    "emoji": "5️⃣ + 3️⃣ ="
+  },
+  {
+    "id": 298,
+    "objectName": "8",
+    "emoji": "6️⃣ + 2️⃣ ="
+  },
+  {
+    "id": 299,
+    "objectName": "8",
+    "emoji": "7️⃣ + 1️⃣ ="
+  },
+  {
+    "id": 300,
+    "objectName": "8",
+    "emoji": "8️⃣ + 0️⃣ ="
+  },
+  {
+    "id": 301,
+    "objectName": "9",
+    "emoji": "0️⃣ + 9️⃣ ="
+  },
+  {
+    "id": 302,
+    "objectName": "9",
+    "emoji": "1️⃣ + 8️⃣ ="
+  },
+  {
+    "id": 303,
+    "objectName": "9",
+    "emoji": "2️⃣ + 7️⃣ ="
+  },
+  {
+    "id": 304,
+    "objectName": "9",
+    "emoji": "3️⃣ + 6️⃣ ="
+  },
+  {
+    "id": 305,
+    "objectName": "9",
+    "emoji": "4️⃣ + 5️⃣ ="
+  },
+  {
+    "id": 306,
+    "objectName": "9",
+    "emoji": "5️⃣ + 4️⃣ ="
+  },
+  {
+    "id": 307,
+    "objectName": "9",
+    "emoji": "6️⃣ + 3️⃣ ="
+  },
+  {
+    "id": 308,
+    "objectName": "9",
+    "emoji": "7️⃣ + 2️⃣ ="
+  },
+  {
+    "id": 309,
+    "objectName": "9",
+    "emoji": "8️⃣ + 1️⃣ ="
+  },
+  {
+    "id": 310,
+    "objectName": "9",
+    "emoji": "9️⃣ + 0️⃣ ="
+  },
+  {
+    "id": 311,
+    "objectName": "0",
+    "emoji": "0️⃣ - 0️⃣ ="
+  },
+  {
+    "id": 312,
+    "objectName": "0",
+    "emoji": "1️⃣ - 1️⃣ ="
+  },
+  {
+    "id": 313,
+    "objectName": "0",
+    "emoji": "2️⃣ - 2️⃣ ="
+  },
+  {
+    "id": 314,
+    "objectName": "0",
+    "emoji": "3️⃣ - 3️⃣ ="
+  },
+  {
+    "id": 315,
+    "objectName": "0",
+    "emoji": "4️⃣ - 4️⃣ ="
+  },
+  {
+    "id": 316,
+    "objectName": "0",
+    "emoji": "5️⃣ - 5️⃣ ="
+  },
+  {
+    "id": 317,
+    "objectName": "0",
+    "emoji": "6️⃣ - 6️⃣ ="
+  },
+  {
+    "id": 318,
+    "objectName": "0",
+    "emoji": "7️⃣ - 7️⃣ ="
+  },
+  {
+    "id": 319,
+    "objectName": "0",
+    "emoji": "8️⃣ - 8️⃣ ="
+  },
+  {
+    "id": 320,
+    "objectName": "0",
+    "emoji": "9️⃣ - 9️⃣ ="
+  },
+  {
+    "id": 321,
+    "objectName": "1",
+    "emoji": "1️⃣ - 0️⃣ ="
+  },
+  {
+    "id": 322,
+    "objectName": "1",
+    "emoji": "2️⃣ - 1️⃣ ="
+  },
+  {
+    "id": 323,
+    "objectName": "1",
+    "emoji": "3️⃣ - 2️⃣ ="
+  },
+  {
+    "id": 324,
+    "objectName": "1",
+    "emoji": "4️⃣ - 3️⃣ ="
+  },
+  {
+    "id": 325,
+    "objectName": "1",
+    "emoji": "5️⃣ - 4️⃣ ="
+  },
+  {
+    "id": 326,
+    "objectName": "1",
+    "emoji": "6️⃣ - 5️⃣ ="
+  },
+  {
+    "id": 327,
+    "objectName": "1",
+    "emoji": "7️⃣ - 6️⃣ ="
+  },
+  {
+    "id": 328,
+    "objectName": "1",
+    "emoji": "8️⃣ - 7️⃣ ="
+  },
+  {
+    "id": 329,
+    "objectName": "1",
+    "emoji": "9️⃣ - 8️⃣ ="
+  },
+  {
+    "id": 330,
+    "objectName": "2",
+    "emoji": "2️⃣ - 0️⃣ ="
+  },
+  {
+    "id": 331,
+    "objectName": "2",
+    "emoji": "3️⃣ - 1️⃣ ="
+  },
+  {
+    "id": 332,
+    "objectName": "2",
+    "emoji": "4️⃣ - 2️⃣ ="
+  },
+  {
+    "id": 333,
+    "objectName": "2",
+    "emoji": "5️⃣ - 3️⃣ ="
+  },
+  {
+    "id": 334,
+    "objectName": "2",
+    "emoji": "6️⃣ - 4️⃣ ="
+  },
+  {
+    "id": 335,
+    "objectName": "2",
+    "emoji": "7️⃣ - 5️⃣ ="
+  },
+  {
+    "id": 336,
+    "objectName": "2",
+    "emoji": "8️⃣ - 6️⃣ ="
+  },
+  {
+    "id": 337,
+    "objectName": "2",
+    "emoji": "9️⃣ - 7️⃣ ="
+  },
+  {
+    "id": 338,
+    "objectName": "3",
+    "emoji": "3️⃣ - 0️⃣ ="
+  },
+  {
+    "id": 339,
+    "objectName": "3",
+    "emoji": "4️⃣ - 1️⃣ ="
+  },
+  {
+    "id": 340,
+    "objectName": "3",
+    "emoji": "5️⃣ - 2️⃣ ="
+  },
+  {
+    "id": 341,
+    "objectName": "3",
+    "emoji": "6️⃣ - 3️⃣ ="
+  },
+  {
+    "id": 342,
+    "objectName": "3",
+    "emoji": "7️⃣ - 4️⃣ ="
+  },
+  {
+    "id": 343,
+    "objectName": "3",
+    "emoji": "8️⃣ - 5️⃣ ="
+  },
+  {
+    "id": 344,
+    "objectName": "3",
+    "emoji": "9️⃣ - 6️⃣ ="
+  },
+  {
+    "id": 345,
+    "objectName": "4",
+    "emoji": "4️⃣ - 0️⃣ ="
+  },
+  {
+    "id": 346,
+    "objectName": "4",
+    "emoji": "5️⃣ - 1️⃣ ="
+  },
+  {
+    "id": 347,
+    "objectName": "4",
+    "emoji": "6️⃣ - 2️⃣ ="
+  },
+  {
+    "id": 348,
+    "objectName": "4",
+    "emoji": "7️⃣ - 3️⃣ ="
+  },
+  {
+    "id": 349,
+    "objectName": "4",
+    "emoji": "8️⃣ - 4️⃣ ="
+  },
+  {
+    "id": 350,
+    "objectName": "4",
+    "emoji": "9️⃣ - 5️⃣ ="
+  },
+  {
+    "id": 351,
+    "objectName": "5",
+    "emoji": "5️⃣ - 0️⃣ ="
+  },
+  {
+    "id": 352,
+    "objectName": "5",
+    "emoji": "6️⃣ - 1️⃣ ="
+  },
+  {
+    "id": 353,
+    "objectName": "5",
+    "emoji": "7️⃣ - 2️⃣ ="
+  },
+  {
+    "id": 354,
+    "objectName": "5",
+    "emoji": "8️⃣ - 3️⃣ ="
+  },
+  {
+    "id": 355,
+    "objectName": "5",
+    "emoji": "9️⃣ - 4️⃣ ="
+  },
+  {
+    "id": 356,
+    "objectName": "6",
+    "emoji": "6️⃣ - 0️⃣ ="
+  },
+  {
+    "id": 357,
+    "objectName": "6",
+    "emoji": "7️⃣ - 1️⃣ ="
+  },
+  {
+    "id": 358,
+    "objectName": "6",
+    "emoji": "8️⃣ - 2️⃣ ="
+  },
+  {
+    "id": 359,
+    "objectName": "6",
+    "emoji": "9️⃣ - 3️⃣ ="
+  },
+  {
+    "id": 360,
+    "objectName": "7",
+    "emoji": "7️⃣ - 0️⃣ ="
+  },
+  {
+    "id": 361,
+    "objectName": "7",
+    "emoji": "8️⃣ - 1️⃣ ="
+  },
+  {
+    "id": 362,
+    "objectName": "7",
+    "emoji": "9️⃣ - 2️⃣ ="
+  },
+  {
+    "id": 363,
+    "objectName": "8",
+    "emoji": "8️⃣ - 0️⃣ ="
+  },
+  {
+    "id": 364,
+    "objectName": "8",
+    "emoji": "9️⃣ - 1️⃣ ="
+  },
+  {
+    "id": 365,
+    "objectName": "9",
+    "emoji": "9️⃣ - 0️⃣ ="
   }
 ]
