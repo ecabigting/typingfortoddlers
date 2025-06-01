@@ -204,7 +204,7 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
           {/* const textColor = isHint */ }
           {/*   ? "text-slate-400 dark:text-slate-500" // Dimmer color for hints */ }
           {/*   : "text-slate-700 dark:text-slate-200"; // Regular color for user input */ }
-          const textColor = "text-white"
+          {/* const textColor = "text-white" */ }
           const borderStyle = isHint
             ? "border-b-0" // No bottom border for hints
             : "border-b-8 border-b-orange-600"; // Bottom border for user input (first letter)
@@ -217,7 +217,7 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
               maxLength={1}
               value={guess[index] || ""}
               ref={(el: HTMLInputElement | null) => { inputRefs.current[index] = el; }}
-              className={`${baseClasses} ${textColor} ${borderStyle}`}
+              className={`${baseClasses} ${borderStyle}`}
               aria-label={`Character ${index + 1} of ${currentObject.objectName.length} ${isHint ? '(Hint)' : '(Your Guess)'}`}
               tabIndex={-1}
             />
