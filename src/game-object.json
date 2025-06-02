@@ -1493,5 +1493,40 @@
     "id": 365,
     "objectName": "9",
     "emoji": "9️⃣ - 0️⃣ ="
+  },
+  {
+    "id": 366,
+    "objectName": "cart",
+    "emoji": "🛒"
+  },
+  {
+    "id": 367,
+    "objectName": "smoke",
+    "emoji": "💨"
+  },
+  {
+    "id": 368,
+    "objectName": "eggplant",
+    "emoji": "🍆"
+  },
+  {
+    "id": 369,
+    "objectName": "shark",
+    "emoji": "🦈"
+  },
+  {
+    "id": 370,
+    "objectName": "bubbles",
+    "emoji": "🫧"
+  },
+  {
+    "id": 371,
+    "objectName": "rabbit",
+    "emoji": "🐇"
+  },
+  {
+    "id": 372,
+    "objectName": "turtle",
+    "emoji": "𓆉"
   }
 ]
