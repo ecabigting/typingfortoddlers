@@ -79,7 +79,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   return (
     // Modal Backdrop
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70] p-4"
       onClick={onClose} // Close modal if backdrop is clicked
     >
       {/* Modal Content */}
@@ -216,7 +216,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
           {/* Placeholder for future settings */}
           <div className="border-t border-slate-200 dark:border-slate-700 pt-4 mt-4">
-            <p className="text-sm text-slate-500 dark:text-slate-400">More settings coming soon!</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Built with ❤️ by <a href="https://ericcabigting.dev/" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition-colors">ericcabigting</a> <a href="https://github.com/ecabigting/typingfortoddlers" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity" aria-label="GitHub repository"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" className="h-5 inline-block" /></a></p>
           </div>
         </div>
       </div>

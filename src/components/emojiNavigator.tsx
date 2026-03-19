@@ -64,7 +64,11 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const previousKeyboardHeight = useRef<number>(0);
   const keyboardRef = useRef<HTMLDivElement>(null);
+  
+  // Keyboard should be visible only on touch devices and when settings modal is closed
+  const showKeyboard = isTouchDevice && !isSettingsModalOpen;
 
   // --- Load settings from localStorage on mount (Step 1.2) ---
   useEffect(() => {
@@ -93,11 +97,16 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
     const updateKeyboardHeight = () => {
       if (keyboardRef.current) {
         const height = keyboardRef.current.offsetHeight;
+        previousKeyboardHeight.current = height; // Store for faster restoration
         setKeyboardHeight(height);
       }
     };
     
-    updateKeyboardHeight();
+    // Only measure if keyboard is shown
+    if (showKeyboard) {
+      updateKeyboardHeight();
+    }
+    
     window.addEventListener('resize', updateKeyboardHeight);
     window.addEventListener('orientationchange', updateKeyboardHeight);
     
@@ -105,7 +114,20 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
       window.removeEventListener('resize', updateKeyboardHeight);
       window.removeEventListener('orientationchange', updateKeyboardHeight);
     };
-  }, [isTouchDevice]);
+  }, [isTouchDevice, showKeyboard]);
+
+  // --- Manage keyboard height when showing/hiding ---
+  useEffect(() => {
+    if (!showKeyboard) {
+      // Store current height before hiding and reset to 0
+      previousKeyboardHeight.current = keyboardHeight;
+      setKeyboardHeight(0);
+    } else if (previousKeyboardHeight.current > 0) {
+      // When showing, use previous height for immediate positioning
+      setKeyboardHeight(previousKeyboardHeight.current);
+    }
+    // The main effect will remeasure actual height after render
+  }, [showKeyboard]);
 
   // --- Function to handle settings changes and save to localStorage 
   const handleSettingsChange = (newSettings: GameSettings) => {
@@ -319,6 +341,14 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
     ? `calc((100vh - ${keyboardHeight}px) / 2)`
     : '50%';
 
+  // Stable random emoji for math problems (doesn't change on re-render)
+  const mathEmoji = useMemo(() => {
+    if (!activeGameObjects[currentIndex] || isWordObject(activeGameObjects[currentIndex])) {
+      return null;
+    }
+    return emojiObjectsArr[Math.floor(Math.random() * emojiObjectsArr.length)];
+  }, [activeGameObjects[currentIndex]?.id]);
+
   return (
     <div
       className={`flex flex-col items-center justify-center min-h-screen w-full 
@@ -404,9 +434,7 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
                     const mathObj = activeGameObjects[currentIndex];
                     const emojiArr = mathObj?.emoji as [number, number, string];
                     const [num1, num2, operator] = emojiArr;
-                    const result = operator === "+" ? num1 + num2 : num1 - num2;
-                    // Truly random emoji each time this math problem is rendered
-                    const randomEmoji = emojiObjectsArr[Math.floor(Math.random() * emojiObjectsArr.length)];
+
   return (
                       <div className="flex space-x-2">
                         {/* First number visualization */}
@@ -414,7 +442,7 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
                           <div className="text-4xl mb-2">{emojiNumbersArr[num1]}</div>
                           <div className="flex flex-wrap gap-1 justify-center">
                             {Array.from({ length: num1 || 0 }, (_, i) => (
-                              <span key={i} className="text-2xl">{randomEmoji}</span>
+                              <span key={i} className="text-2xl">{mathEmoji}</span>
                             ))}
                           </div>
                         </div>
@@ -427,7 +455,7 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
                           <div className="text-4xl mb-2">{emojiNumbersArr[num2]}</div>
                           <div className="flex flex-wrap gap-1 justify-center">
                             {Array.from({ length: num2 || 0 }, (_, i) => (
-                              <span key={i} className="text-2xl">{randomEmoji}</span>
+                              <span key={i} className="text-2xl">{mathEmoji}</span>
                             ))}
                           </div>
                         </div>
@@ -481,7 +509,7 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
           )}
 
           {/* Conditionally render CustomKeyboard */}
-          {isTouchDevice && <CustomKeyboard onKeyPress={processInput} ref={keyboardRef} />}
+          {showKeyboard && <CustomKeyboard onKeyPress={processInput} ref={keyboardRef} />}
         </>
       )}
     </div >
