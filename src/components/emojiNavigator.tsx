@@ -70,27 +70,29 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
   // Keyboard should be visible only on touch devices and when settings modal is closed
   const showKeyboard = isTouchDevice && !isSettingsModalOpen;
 
-  // --- Load settings from localStorage on mount (Step 1.2) ---
-  useEffect(() => {
-    const savedSettings = localStorage.getItem('emojiGameSettings'); // Use a unique key
-    if (savedSettings) {
-      try {
-        const parsedSettings = JSON.parse(savedSettings);
-        // Merge with defaults to ensure all keys are present if new settings are added later
-        setSettings(prev => ({ ...DEFAULT_SETTINGS, ...parsedSettings }));
-      } catch (error) {
-        console.error("Error parsing saved settings:", error);
-        setSettings(DEFAULT_SETTINGS);
-        // Save defaults to localStorage in case of parse error
-        localStorage.setItem('emojiGameSettings', JSON.stringify(DEFAULT_SETTINGS));
-      }
-    } else {
-      setSettings(DEFAULT_SETTINGS);
-      // Save defaults to localStorage for first-time users
-      localStorage.setItem('emojiGameSettings', JSON.stringify(DEFAULT_SETTINGS));
-    }
-    setIsTouchDevice(typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
-  }, []);
+   // --- Load settings from localStorage on mount (Step 1.2) ---
+   useEffect(() => {
+     const savedSettings = localStorage.getItem('emojiGameSettings'); // Use a unique key
+     if (savedSettings) {
+       try {
+         const parsedSettings = JSON.parse(savedSettings);
+         // Merge with defaults to ensure all keys are present if new settings are added later
+         setSettings(prev => ({ ...DEFAULT_SETTINGS, ...parsedSettings }));
+       } catch (error) {
+         console.error("Error parsing saved settings:", error);
+         setSettings(DEFAULT_SETTINGS);
+         // Save defaults to localStorage in case of parse error
+         localStorage.setItem('emojiGameSettings', JSON.stringify(DEFAULT_SETTINGS));
+       }
+     } else {
+       setSettings(DEFAULT_SETTINGS);
+       // Save defaults to localStorage for first-time users
+       localStorage.setItem('emojiGameSettings', JSON.stringify(DEFAULT_SETTINGS));
+       // Open settings modal on first load
+       setIsSettingsModalOpen(true);
+     }
+     setIsTouchDevice(typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
+   }, []);
 
   // --- Measure keyboard height for arrow positioning ---
   useEffect(() => {
@@ -349,12 +351,12 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
     return emojiObjectsArr[Math.floor(Math.random() * emojiObjectsArr.length)];
   }, [activeGameObjects[currentIndex]?.id]);
 
-  return (
-    <div
-      className={`flex flex-col items-center justify-center min-h-screen w-full 
-               space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8 xl:space-y-10
-               px-2 sm:px-4
-               pb-4`}>
+   return (
+     <div
+       className={`flex flex-col items-center justify-center min-h-screen w-full 
+                space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8 xl:space-y-10
+                px-2 sm:px-4
+                pb-4 ${isTouchDevice && showKeyboard ? `pb-[${keyboardHeight}px]` : ''}`}>
 
       {/* Gear Emoji Button (Step 1.5) - ALWAYS VISIBLE */}
       <button
