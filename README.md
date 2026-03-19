@@ -46,4 +46,3 @@ This project is licensed under the GNU Affero General Public License v3.0 (AGPL-
 
 The AGPL license ensures that if you modify and deploy this software (including as a service), you must make your modified source code available to users. This prevents others from taking the code, modifying it, and using it without sharing their changes.
 
-Images used in the project are stored in the `images/` directory.
