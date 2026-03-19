@@ -1,11 +1,6 @@
 import EmojiNavigator from "@/components/emojiNavigator";
+import { GameObject } from "@/components/emojiNavigator";
 import gameObjectsData from "../game-object.json";
-
-type GameObject = {
-  id: number;
-  objectName: string;
-  emoji: string;
-};
 
 
 

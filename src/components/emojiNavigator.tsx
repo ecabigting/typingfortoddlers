@@ -1,20 +1,42 @@
 // src/components/EmojiNavigator.tsx
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import CustomKeyboard from './customKeyboard';
 
 import SettingsModal, { GameSettings } from './SettingsModal';
 
-type GameObject = {
+export type GameObject = {
   id: number;
   objectName: string;
-  emoji: string;
+  emoji: string | [number, number, string];
+  type: "word" | "math";
 };
 
 interface EmojiNavigatorProps {
   initialObjects: GameObject[];
 };
+
+// Emoji arrays for math problem visualization
+const emojiObjectsArr = [
+  "🍎",  // apple
+  "🍊",  // orange
+  "🍌",  // banana
+  "🍇",  // grape
+  "🍓",  // strawberry
+  "🍉",  // watermelon
+  "🥕",  // carrot
+  "🥦",  // broccoli
+  "🐶",  // dog
+  "🐱",  // cat
+  "🐰",  // bunny
+  "🦁",  // lion
+  "🐘",  // elephant
+  "🐼",  // panda
+  "🦊",  // fox (added to reach 15)
+];
+
+const emojiNumbersArr = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"];
 
 // Default settings
 const DEFAULT_SETTINGS: GameSettings = {
@@ -29,6 +51,7 @@ const DEFAULT_SETTINGS: GameSettings = {
 };
 
 export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) {
+
   const [settings, setSettings] = useState<GameSettings>(DEFAULT_SETTINGS);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
@@ -40,6 +63,8 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
   const [showCorrectFeedback, setShowCorrectFeedback] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const keyboardRef = useRef<HTMLDivElement>(null);
 
   // --- Load settings from localStorage on mount (Step 1.2) ---
   useEffect(() => {
@@ -63,6 +88,25 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
     setIsTouchDevice(typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
   }, []);
 
+  // --- Measure keyboard height for arrow positioning ---
+  useEffect(() => {
+    const updateKeyboardHeight = () => {
+      if (keyboardRef.current) {
+        const height = keyboardRef.current.offsetHeight;
+        setKeyboardHeight(height);
+      }
+    };
+    
+    updateKeyboardHeight();
+    window.addEventListener('resize', updateKeyboardHeight);
+    window.addEventListener('orientationchange', updateKeyboardHeight);
+    
+    return () => {
+      window.removeEventListener('resize', updateKeyboardHeight);
+      window.removeEventListener('orientationchange', updateKeyboardHeight);
+    };
+  }, [isTouchDevice]);
+
   // --- Function to handle settings changes and save to localStorage 
   const handleSettingsChange = (newSettings: GameSettings) => {
     setSettings(newSettings);
@@ -71,24 +115,17 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
 
   // Helper function to determine if a game object is a word or math problem
   const isWordObject = (obj: GameObject): boolean => {
-    // Words have objectNames that are actual words (not just digits)
-    // Math problems have objectNames that are digit strings like "0", "1", "2", etc.
-    // Also check if emoji contains mathematical patterns
-    const isDigitOnly = /^\d+$/.test(obj.objectName);
-    const hasMathSymbols = obj.emoji.includes('+') || obj.emoji.includes('-') || obj.emoji.includes('=');
-    
-    // If it's a digit-only objectName AND has math symbols, it's likely a math problem
-    // Otherwise, it's a word
-    return !(isDigitOnly && hasMathSymbols);
+    return obj.type === "word";
   };
 
   // Helper function to determine if a math problem is addition or subtraction
-  const getMathProblemType = (obj: GameObject): 'addition' | 'subtraction' | null => {
+  const getMathProblemType = (obj: GameObject): "addition" | "subtraction" | null => {
     if (!isWordObject(obj)) { // It's a math problem
-      if (obj.emoji.includes('+')) {
-        return 'addition';
-      } else if (obj.emoji.includes('-')) {
-        return 'subtraction';
+      const emojiArr = obj.emoji as [number, number, string];
+      if (emojiArr[2] === "+") {
+        return "addition";
+      } else if (emojiArr[2] === "-") {
+        return "subtraction";
       }
     }
     return null; // Not a math problem or unknown type
@@ -96,6 +133,7 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
 
   // --- Effect to filter initialObjects based on settings
   useEffect(() => {
+
     let filtered = initialObjects;
 
     // Filter by allowWords and allowMathProblems
@@ -146,10 +184,13 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
       });
     }
 
+
+
     setActiveGameObjects(filtered);
     setCurrentIndex(0); // Reset to the first word of the new filtered list
     // Note: The guess reset for the new word will be handled by the next useEffect
   }, [initialObjects, settings]);
+
 
 
   // Centralized input processing logic
@@ -273,7 +314,11 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
     setCurrentIndex(prevIndex);
   };
 
-  
+  // Calculate vertical position for arrows (centered in space above keyboard)
+  const arrowVerticalPosition = isTouchDevice
+    ? `calc((100vh - ${keyboardHeight}px) / 2)`
+    : '50%';
+
   return (
     <div
       className={`flex flex-col items-center justify-center min-h-screen w-full 
@@ -300,6 +345,30 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
         />
       )}
 
+      {/* Fixed navigation arrows */}
+      <button
+        onClick={showPreviousEmoji}
+        className="fixed z-[60] left-4 md:left-6 lg:left-8 text-2xl sm:text-3xl p-2 sm:p-3 md:p-4 hover:opacity-70 transition-opacity"
+        style={{
+          top: arrowVerticalPosition,
+          transform: 'translateY(-50%)'
+        }}
+        aria-label="Previous emoji"
+      >
+        ◀️
+      </button>
+      <button
+        onClick={showNextEmoji}
+        className="fixed z-[60] right-4 md:right-6 lg:right-8 text-2xl sm:text-3xl p-2 sm:p-3 md:p-4 hover:opacity-70 transition-opacity"
+        style={{
+          top: arrowVerticalPosition,
+          transform: 'translateY(-50%)'
+        }}
+        aria-label="Next emoji"
+      >
+        ▶️
+      </button>
+
       {/* Main Game Content */}
       {(!gameObjects || activeGameObjects.length === 0) ? (
         <p className="text-xl">No game objects to display.</p>
@@ -322,10 +391,57 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
           }
 
           {/* Emoji and Navigation */}
-          <div className={`flex items-center justify-center space-x-2 sm:space-x-4 md:space-x-8 ${isTouchDevice ? '' : ''}`}>
-            <button onClick={showPreviousEmoji} className="text-2xl sm:text-3xl p-2 sm:p-3 md:p-4 hover:opacity-70 transition-opacity" aria-label="Previous emoji" disabled={activeGameObjects.length <= 1 || isShaking || showCorrectFeedback}>◀️</button>
-            <div className="text-6xl sm:text-8xl md:text-9xl lg:text-[120px] xl:text-[150px]">{activeGameObjects[currentIndex]?.emoji}</div>
-            <button onClick={showNextEmoji} className="text-2xl sm:text-3xl p-2 sm:p-3 md:p-4 hover:opacity-70 transition-opacity" aria-label="Next emoji" disabled={activeGameObjects.length <= 1 || isShaking || showCorrectFeedback}>▶️</button>
+          <div className={`flex items-center justify-center ${isTouchDevice ? '' : ''}`}>
+            <div className="flex flex-col items-center">
+              {isWordObject(activeGameObjects[currentIndex]) ? (
+                // WORD RENDERING
+                <div className="text-6xl sm:text-8xl md:text-9xl lg:text-[120px] xl:text-[150px]">{activeGameObjects[currentIndex]?.emoji}</div>
+              ) : (
+                // MATH PROBLEM VISUALIZATION
+                <>
+                  {(() => {
+
+                    const mathObj = activeGameObjects[currentIndex];
+                    const emojiArr = mathObj?.emoji as [number, number, string];
+                    const [num1, num2, operator] = emojiArr;
+                    const result = operator === "+" ? num1 + num2 : num1 - num2;
+                    // Truly random emoji each time this math problem is rendered
+                    const randomEmoji = emojiObjectsArr[Math.floor(Math.random() * emojiObjectsArr.length)];
+  return (
+                      <div className="flex space-x-2">
+                        {/* First number visualization */}
+                        <div className="flex flex-col items-center w-[120px] sm:w-[150px]">
+                          <div className="text-4xl mb-2">{emojiNumbersArr[num1]}</div>
+                          <div className="flex flex-wrap gap-1 justify-center">
+                            {Array.from({ length: num1 || 0 }, (_, i) => (
+                              <span key={i} className="text-2xl">{randomEmoji}</span>
+                            ))}
+                          </div>
+                        </div>
+                        {/* Operator */}
+                        <div className="flex flex-col items-center space-x-2">
+                          <div className="text-2xl">{operator}</div>
+                        </div>
+                        {/* Second number visualization */}
+                        <div className="flex flex-col items-center w-[120px] sm:w-[150px]">
+                          <div className="text-4xl mb-2">{emojiNumbersArr[num2]}</div>
+                          <div className="flex flex-wrap gap-1 justify-center">
+                            {Array.from({ length: num2 || 0 }, (_, i) => (
+                              <span key={i} className="text-2xl">{randomEmoji}</span>
+                            ))}
+                          </div>
+                        </div>
+                        {/* Equals sign */}
+                        <div className="flex flex-col items-center space-x-2">
+                          <div className="text-2xl">=</div>
+                        </div>
+                        {/* Result visualization (removed) */}
+                      </div>
+                    );
+                  })()}
+                </>
+              )}
+            </div>
           </div>
 
           {/* Visual Input Boxes */}
@@ -351,7 +467,7 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
                 const textColor = "text-white";
                 const borderStyle = isHint ? "border-b-0" : "border-b-4 md:border-b-8 border-b-orange-600";
 
-                return (
+  return (
                   <input
                     key={index} type="text" readOnly maxLength={1} value={guess[index] || ""}
                     ref={(el: HTMLInputElement | null) => { inputRefs.current[index] = el; }}
@@ -365,7 +481,7 @@ export default function EmojiNavigator({ initialObjects }: EmojiNavigatorProps) 
           )}
 
           {/* Conditionally render CustomKeyboard */}
-          {isTouchDevice && <CustomKeyboard onKeyPress={processInput} />}
+          {isTouchDevice && <CustomKeyboard onKeyPress={processInput} ref={keyboardRef} />}
         </>
       )}
     </div >
